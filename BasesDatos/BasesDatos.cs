@@ -42,7 +42,11 @@ namespace BasesDatos
             }
         }
 
+<<<<<<< HEAD
         public void EnviarSoloConsulta()
+=======
+        public void enviarSoloConsulta()
+>>>>>>> 393b85693498f1e056c5dc7c2ca2c8ba588d9a68
         {
             comando.Connection = conexion;
 
@@ -58,7 +62,11 @@ namespace BasesDatos
             }
         }
 
+<<<<<<< HEAD
         public void CerrarConexion()
+=======
+        public void cerrarConexion()
+>>>>>>> 393b85693498f1e056c5dc7c2ca2c8ba588d9a68
         {
             if (lector != null)
             {
