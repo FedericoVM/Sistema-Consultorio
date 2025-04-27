@@ -7,8 +7,6 @@ namespace BasesDatos
     {
         private SqlConnection conexion;
         private SqlCommand comando;
-        private SqlDataReader lector;
-
         public SqlDataReader Lector { get; private set; }
       
 
@@ -16,15 +14,26 @@ namespace BasesDatos
         {
             conexion = new SqlConnection("server=.\\SQLEXPRESS;database = DB_Consultorio; integrated security = true;");
             comando = new SqlCommand();
+            comando.Connection = conexion;
         }
 
-        public void IngresarConsulta(string consulta)
+        public void SetConsulta(string consulta)
         {
         
             comando.CommandType = System.Data.CommandType.Text;
             comando.CommandText = consulta;
+            comando.Parameters.Clear();
         }
 
+        public void AgregarParametro(string nombreParametro, object valor)
+        {
+            if (!nombreParametro.StartsWith("@"))
+            {
+                nombreParametro = "@" + nombreParametro;
+            }
+
+            comando.Parameters.AddWithValue(nombreParametro, valor);
+        }
         public void SolicitarDatos()
         {
             comando.Connection = conexion;
@@ -35,13 +44,12 @@ namespace BasesDatos
                 Lector = comando.ExecuteReader();
 
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
-                throw;
+                throw new Exception("Error al solicitar datos de la Base de datos", ex);
             }
         }
-
         public void enviarSoloConsulta()
         {
             comando.Connection = conexion;
@@ -57,12 +65,11 @@ namespace BasesDatos
                 throw;
             }
         }
-
         public void cerrarConexion()
         {
-            if (lector != null)
+            if (Lector != null)
             {
-                lector.Close();
+                Lector.Close();
             }
 
             conexion.Close();
